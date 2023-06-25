@@ -17,6 +17,7 @@ type SdkConfig struct {
 	Debug     bool   `json:"debug"`
 	ServeHost string `json:"serveHost"` // 服务端API
 	AddrHost  string `json:"addrHost"`  // 服务启动ip:port
+	ProxyHost string `json:"proxyHost"` // 服务启动ip:port
 }
 
 func GetPath(path string) string {

@@ -146,6 +146,8 @@ type NFTTransfer struct {
 	Status      string `json:"status"`      //@required 链上状态，0：失败，1：成功
 }
 
+// ******************************************************* notify node *******************************************************
+
 type Observer interface {
 	// 交易单通知
 	TransactionNotify(transaction *Transaction) error
@@ -187,14 +189,14 @@ func (s *UnimplementedObserver) NFTTransferNotify(transfer *NFTTransfer) error {
 
 // ******************************************************* webapp node *******************************************************
 
-type MyWebNode struct {
+type SubscribeNode struct {
 	node.HttpNode
 	obs  Observer
 	auth AuthInfo
 }
 
-func NewHTTP() *MyWebNode {
-	var my = &MyWebNode{}
+func NewSubscribeNode() *SubscribeNode {
+	var my = &SubscribeNode{}
 	my.EnableECC(true)
 	keyConfig, _ := major.ReadKeyConfig()
 	if len(keyConfig.EcdsaKey) > 0 {
@@ -213,7 +215,7 @@ func StartSubscribeNode(ob Observer, appID, appKey, addrHost string) {
 	if ob == nil {
 		panic("observer instance can't be empty")
 	}
-	my := NewHTTP()
+	my := NewSubscribeNode()
 	my.obs = ob
 	my.auth = AuthInfo{appID: appID, appKey: appKey}
 	my.GET("/api/key", my.key, &node.RouterConfig{Guest: true})
@@ -248,77 +250,77 @@ type TokenBalanceObject struct {
 	ContractID       string `json:"contractID"`
 }
 
-func (self *MyWebNode) key(ctx *node.Context) error {
+func (s *SubscribeNode) key(ctx *node.Context) error {
 	_, publicKey := ctx.RSA.GetPublicKey()
-	return self.Text(ctx, publicKey)
+	return s.Text(ctx, publicKey)
 }
 
-func (self *MyWebNode) login(ctx *node.Context) error {
+func (s *SubscribeNode) login(ctx *node.Context) error {
 	req := &AppLogin{}
 	if err := ctx.JsonBody.ParseData(req); err != nil {
 		return err
 	}
-	if !utils.PasswordVerify(self.auth.appKey, utils.GetLocalSecretKey(), req.AppSecret) {
+	if !utils.PasswordVerify(s.auth.appKey, utils.GetLocalSecretKey(), req.AppSecret) {
 		return utils.Error("appSecret invalid")
 	}
 	subject := &jwt.Subject{}
 	config := ctx.GetJwtConfig()
-	token := subject.Create(self.auth.appID).Dev("API").Generate(config)
+	token := subject.Create(s.auth.appID).Dev("API").Generate(config)
 	secret := jwt.GetTokenSecret(token, config.TokenKey)
-	return self.Json(ctx, &sdk.AuthToken{Token: token, Secret: secret, Expired: subject.Payload.Exp})
+	return s.Json(ctx, &sdk.AuthToken{Token: token, Secret: secret, Expired: subject.Payload.Exp})
 }
 
-func (self *MyWebNode) transactionNotify(ctx *node.Context) error {
+func (s *SubscribeNode) transactionNotify(ctx *node.Context) error {
 	tx := &Transaction{}
 	if err := ctx.JsonBody.ParseData(tx); err != nil {
 		return err
 	}
-	if err := self.obs.TransactionNotify(tx); err != nil {
-		return self.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
+	if err := s.obs.TransactionNotify(tx); err != nil {
+		return s.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
 	}
-	return self.Json(ctx, &CallResult{Success: true})
+	return s.Json(ctx, &CallResult{Success: true})
 }
 
-func (self *MyWebNode) blockNotify(ctx *node.Context) error {
+func (s *SubscribeNode) blockNotify(ctx *node.Context) error {
 	head := &BlockHeader{}
 	if err := ctx.JsonBody.ParseData(head); err != nil {
 		return err
 	}
-	if err := self.obs.BlockNotify(head); err != nil {
-		return self.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
+	if err := s.obs.BlockNotify(head); err != nil {
+		return s.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
 	}
-	return self.Json(ctx, &CallResult{Success: true})
+	return s.Json(ctx, &CallResult{Success: true})
 }
 
-func (self *MyWebNode) balanceUpdateNotify(ctx *node.Context) error {
+func (s *SubscribeNode) balanceUpdateNotify(ctx *node.Context) error {
 	balance := &BalanceObject{}
 	if err := ctx.JsonBody.ParseData(balance); err != nil {
 		return err
 	}
-	if err := self.obs.BalanceUpdateNotify(balance); err != nil {
-		return self.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
+	if err := s.obs.BalanceUpdateNotify(balance); err != nil {
+		return s.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
 	}
-	return self.Json(ctx, &CallResult{Success: true})
+	return s.Json(ctx, &CallResult{Success: true})
 }
 
-func (self *MyWebNode) smartContractReceiptNotify(ctx *node.Context) error {
+func (s *SubscribeNode) smartContractReceiptNotify(ctx *node.Context) error {
 	receipt := &SmartContractReceipt{}
 	if err := ctx.JsonBody.ParseData(receipt); err != nil {
 		return err
 	}
-	if err := self.obs.SmartContractReceiptNotify(receipt); err != nil {
-		return self.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
+	if err := s.obs.SmartContractReceiptNotify(receipt); err != nil {
+		return s.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
 	}
-	return self.Json(ctx, &CallResult{Success: true})
+	return s.Json(ctx, &CallResult{Success: true})
 }
 
-func (self *MyWebNode) nftTransferNotify(ctx *node.Context) error {
+func (s *SubscribeNode) nftTransferNotify(ctx *node.Context) error {
 	transfer := &NFTTransfer{}
 	if err := ctx.JsonBody.ParseData(transfer); err != nil {
 		return err
 	}
-	if err := self.obs.NFTTransferNotify(transfer); err != nil {
-		return self.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
+	if err := s.obs.NFTTransferNotify(transfer); err != nil {
+		return s.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
 	}
-	return self.Json(ctx, &CallResult{Success: true})
+	return s.Json(ctx, &CallResult{Success: true})
 }
