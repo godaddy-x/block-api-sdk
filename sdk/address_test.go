@@ -81,3 +81,57 @@ func TestGetAddressBalanceList(t *testing.T) {
 	}
 	fmt.Println(res)
 }
+
+func TestProxyFindAddressByAddress(t *testing.T) {
+	res, err := GetProxySDK().FindAddressByAddress(&pb.FindAddressByAddressReq{
+		Symbol:  symbol,
+		Address: address,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+}
+
+func TestProxyFindAddressByAccountID(t *testing.T) {
+	res, err := GetProxySDK().FindAddressByAccountID(&pb.FindAddressByAccountIDReq{
+		Symbol:    symbol,
+		AccountID: accountID,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+}
+
+func TestProxyVerifyAddress(t *testing.T) {
+	res, err := GetProxySDK().VerifyAddress(&pb.VerifyAddressReq{
+		Symbol: symbol,
+		//Address: address,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+}
+
+func TestProxyGetBalanceByAddress(t *testing.T) {
+	res, err := GetProxySDK().GetBalanceByAddress(&pb.GetBalanceByAddressReq{
+		Symbol:  symbol,
+		Address: address,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+}
+
+func TestProxyGetAddressBalanceList(t *testing.T) {
+	res, err := GetProxySDK().GetAddressBalanceList(&pb.GetAddressBalanceListReq{
+		Symbol: symbol,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+}

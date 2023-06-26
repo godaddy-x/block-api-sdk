@@ -12,12 +12,12 @@ type KeyConfig struct {
 }
 
 type SdkConfig struct {
-	AppID     string `json:"appID"`
-	AppKey    string `json:"appKey"`
-	Debug     bool   `json:"debug"`
-	ServeHost string `json:"serveHost"` // 服务端API
-	AddrHost  string `json:"addrHost"`  // 服务启动ip:port
-	ProxyHost string `json:"proxyHost"` // 服务启动ip:port
+	AppID       string `json:"appID"`
+	AppKey      string `json:"appKey"`
+	Debug       bool   `json:"debug"`
+	ServeHost   string `json:"serveHost"`   // 服务端API
+	AddrHost    string `json:"addrHost"`    // 服务启动ip:port
+	EnableProxy bool   `json:"enableProxy"` // 是否启动代理接口
 }
 
 func GetPath(path string) string {

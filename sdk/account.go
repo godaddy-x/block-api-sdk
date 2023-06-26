@@ -4,13 +4,13 @@ import (
 	"github.com/blocktree/go-openw-sdk/v2/sdk/pb"
 )
 
-func (s *ApiNodeSDK) CreateAccount(req *pb.CreateAccountReq) (*pb.AccountResult, []*pb.AddressResult, error) {
+func (s *ApiNodeSDK) CreateAccount(req *pb.CreateAccountReq) (*pb.CreateAccountRes, error) {
 	req.AppID = s.appID
 	res := &pb.CreateAccountRes{}
 	if err := s.HttpSDK.PostByAuth("/api/createAccount", req, res); err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	return res.Account, res.Addresses, nil
+	return res, nil
 }
 
 func (s *ApiNodeSDK) FindAccountByAccountID(req *pb.FindAccountByAccountIDReq) (*pb.AccountResult, error) {

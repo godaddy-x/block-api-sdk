@@ -44,7 +44,7 @@ func InitSDK(config major.SdkConfig, observer Observer) (*ApiNodeSDK, error) {
 		if len(config.AddrHost) == 0 {
 			panic("config addrHost is nil")
 		}
-		go StartSubscribeNode(observer, apiNodeSDK, config.AddrHost)
+		go StartSubscribeNode(observer, apiNodeSDK, config.AddrHost, config.EnableProxy)
 	}
 	return apiNodeSDK, nil
 }

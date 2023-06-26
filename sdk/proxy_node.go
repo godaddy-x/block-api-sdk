@@ -21,40 +21,6 @@ type Observer interface {
 	SmartContractReceiptNotify(receipt *SmartContractReceipt) error
 	// NFT合约交易数据通知
 	NFTTransferNotify(transfer *NFTTransfer) error
-	// proxy api
-	//CreateWallet(ctx *node.Context) error
-	//FindWalletByWalletID(ctx *node.Context) error
-	//FindWalletByParams(ctx *node.Context) error
-	//CreateAccount(ctx *node.Context) error
-	//FindAccountByWalletID(ctx *node.Context) error
-	//FindAccountByAccountID(ctx *node.Context) error
-	//GetBalanceByAccount(ctx *node.Context) error
-	//GetAccountBalanceList(ctx *node.Context) error
-	//CreateAddress(ctx *node.Context) error
-	//ImportAddress(ctx *node.Context) error
-	//FindAddressByAddress(ctx *node.Context) error
-	//FindAddressByAccountID(ctx *node.Context) error
-	//VerifyAddress(ctx *node.Context) error
-	//GetBalanceByAddress(ctx *node.Context) error
-	//GetAddressBalanceList(ctx *node.Context) error
-	//GetSymbolBlockList(ctx *node.Context) error
-	//GetBlockStatus(ctx *node.Context) error
-	//Subscribe(ctx *node.Context) error
-	//FindTradeLog(ctx *node.Context) error
-	//CreateTrade(ctx *node.Context) error
-	//SubmitTrade(ctx *node.Context) error
-	//CreateSummaryTx(ctx *node.Context) error
-	//GetContracts(ctx *node.Context) error
-	//CreateSmartContractTrade(ctx *node.Context) error
-	//SubmitSmartContractTrade(ctx *node.Context) error
-	//CallSmartContractABI(ctx *node.Context) error
-	//FindSmartContractReceipt(ctx *node.Context) error
-	//FollowSmartContractReceipt(ctx *node.Context) error
-	//GetNFTCollection(ctx *node.Context) error
-	//GetNFTToken(ctx *node.Context) error
-	//GetNFTOwnerToken(ctx *node.Context) error
-	//GetNFTTransfer(ctx *node.Context) error
-	//GetTokenURI(ctx *node.Context) error
 }
 
 // ******************************************************* notify node *******************************************************
@@ -84,138 +50,6 @@ func (s *UnimplementedObserver) SmartContractReceiptNotify(receipt *SmartContrac
 func (s *UnimplementedObserver) NFTTransferNotify(transfer *NFTTransfer) error {
 	return nil
 }
-
-//func (s *UnimplementedObserver) CreateWallet(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) FindWalletByWalletID(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) FindWalletByParams(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) CreateAccount(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) FindAccountByWalletID(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) FindAccountByAccountID(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetBalanceByAccount(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetAccountBalanceList(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) CreateAddress(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) ImportAddress(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) FindAddressByAddress(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) FindAddressByAccountID(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) VerifyAddress(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetBalanceByAddress(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetAddressBalanceList(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetSymbolBlockList(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetBlockStatus(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) Subscribe(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) FindTradeLog(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) CreateTrade(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) SubmitTrade(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) CreateSummaryTx(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetContracts(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) CreateSmartContractTrade(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) SubmitSmartContractTrade(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) CallSmartContractABI(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) FindSmartContractReceipt(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) FollowSmartContractReceipt(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetNFTCollection(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetNFTToken(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetNFTOwnerToken(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetNFTTransfer(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
-//
-//func (s *UnimplementedObserver) GetTokenURI(ctx *node.Context) error {
-//	return errors.Errorf("unimplemented method")
-//}
 
 // ******************************************************* webapp api *******************************************************
 
@@ -303,7 +137,11 @@ func (s *SubscribeNode) createWallet(ctx *node.Context) error {
 	if err != nil {
 		return err
 	}
-	return s.Json(ctx, &pb.CreateWalletRes{Result: true, WalletID: res.WalletID, RootPath: res.RootPath, Alias: res.Alias, AccountIndex: res.AccountIndex})
+	res1, err := s.api.FindWalletByWalletID(&pb.FindWalletByWalletIDReq{WalletID: res.WalletID})
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res1)
 }
 
 func (s *SubscribeNode) findWalletByWalletID(ctx *node.Context) error {
@@ -315,5 +153,377 @@ func (s *SubscribeNode) findWalletByWalletID(ctx *node.Context) error {
 	if err != nil {
 		return err
 	}
-	return s.Json(ctx, &pb.FindWalletByWalletIDRes{Result: res})
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) findWalletByParams(ctx *node.Context) error {
+	req := &pb.FindWalletByParamsReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.FindWalletByParams(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) createAccount(ctx *node.Context) error {
+	req := &pb.CreateAccountReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.CreateAccount(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) findAccountByAccountID(ctx *node.Context) error {
+	req := &pb.FindAccountByAccountIDReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.FindAccountByAccountID(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) findAccountByWalletID(ctx *node.Context) error {
+	req := &pb.FindAccountByWalletIDReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.FindAccountByWalletID(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getBalanceByAccount(ctx *node.Context) error {
+	req := &pb.GetBalanceByAccountReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.GetBalanceByAccount(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getAccountBalanceList(ctx *node.Context) error {
+	req := &pb.GetAccountBalanceListReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.GetAccountBalanceList(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) createAddress(ctx *node.Context) error {
+	req := &pb.CreateAddressReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.CreateAddress(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) importAddress(ctx *node.Context) error {
+	req := &pb.ImportAddressReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.ImportAddress(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) findAddressByAddress(ctx *node.Context) error {
+	req := &pb.FindAddressByAddressReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.FindAddressByAddress(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) findAddressByAccountID(ctx *node.Context) error {
+	req := &pb.FindAddressByAccountIDReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.FindAddressByAccountID(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) verifyAddress(ctx *node.Context) error {
+	req := &pb.VerifyAddressReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.VerifyAddress(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getBalanceByAddress(ctx *node.Context) error {
+	req := &pb.GetBalanceByAddressReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.GetBalanceByAddress(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getAddressBalanceList(ctx *node.Context) error {
+	req := &pb.GetAddressBalanceListReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.GetAddressBalanceList(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getSymbolBlockList(ctx *node.Context) error {
+	req := &pb.SymbolBlockListReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.SymbolBlockList(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getBlockStatus(ctx *node.Context) error {
+	req := &pb.GetBlockStatusReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.GetBlockStatus(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) createSubscribe(ctx *node.Context) error {
+	req := &pb.CreateSubscribeReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.CreateSubscribe(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) findTradeLog(ctx *node.Context) error {
+	req := &pb.FindTradeLogReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.FindTradeLog(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) createTrade(ctx *node.Context) error {
+	req := &pb.CreateTradeReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.CreateTrade(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) submitTrade(ctx *node.Context) error {
+	req := &SubmitTradeReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.SubmitTrade(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) createSummaryTx(ctx *node.Context) error {
+	req := &pb.CreateSummaryTxReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.CreateSummaryTx(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getContracts(ctx *node.Context) error {
+	req := &pb.GetContractsReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.GetContracts(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) createSmartContractTrade(ctx *node.Context) error {
+	req := &pb.CreateSmartContractTradeReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.CreateSmartContractTrade(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) submitSmartContractTrade(ctx *node.Context) error {
+	req := &SubmitSmartContractTradeReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.SubmitSmartContractTrade(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) callSmartContractABI(ctx *node.Context) error {
+	req := &pb.CallSmartContractABIReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.CallSmartContractABI(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) findSmartContractReceipt(ctx *node.Context) error {
+	req := &pb.FindSmartContractReceiptReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.FindSmartContractReceipt(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) followSmartContractReceipt(ctx *node.Context) error {
+	req := &pb.FollowSmartContractReceiptReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.FollowSmartContractReceipt(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getNFTCollection(ctx *node.Context) error {
+	req := &pb.GetNFTCollectionReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.GetNFTCollection(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getNFTToken(ctx *node.Context) error {
+	req := &pb.GetNFTTokenReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.GetNFTToken(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getNFTOwnerToken(ctx *node.Context) error {
+	req := &pb.GetNFTOwnerTokenReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.GetNFTOwnerToken(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getNFTTransfer(ctx *node.Context) error {
+	req := &pb.GetNFTTransferReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.GetNFTTransfer(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
+}
+
+func (s *SubscribeNode) getTokenURI(ctx *node.Context) error {
+	req := &pb.GetTokenURIReq{}
+	if err := ctx.JsonBody.ParseData(req); err != nil {
+		return err
+	}
+	res, err := s.api.GetTokenURI(req)
+	if err != nil {
+		return err
+	}
+	return s.Json(ctx, res)
 }

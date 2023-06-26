@@ -188,7 +188,51 @@ func NewSubscribeNode() *SubscribeNode {
 	return my
 }
 
-func StartSubscribeNode(ob Observer, api *ApiNodeSDK, addrHost string) {
+func proxyNode(my *SubscribeNode) {
+	// **************************** wallet ****************************
+	my.POST("/api/createWallet", my.createWallet, &node.RouterConfig{})
+	my.POST("/api/findWalletByWalletID", my.findWalletByWalletID, &node.RouterConfig{})
+	my.POST("/api/findWalletByParams", my.findWalletByParams, &node.RouterConfig{})
+	// **************************** account ****************************
+	my.POST("/api/createAccount", my.createAccount, &node.RouterConfig{})
+	my.POST("/api/findAccountByWalletID", my.findAccountByWalletID, &node.RouterConfig{})
+	my.POST("/api/findAccountByAccountID", my.findAccountByAccountID, &node.RouterConfig{})
+	my.POST("/api/getBalanceByAccount", my.getBalanceByAccount, &node.RouterConfig{})
+	my.POST("/api/getAccountBalanceList", my.getAccountBalanceList, &node.RouterConfig{})
+	// **************************** address ****************************
+	my.POST("/api/createAddress", my.createAddress, &node.RouterConfig{})
+	my.POST("/api/importAddress", my.importAddress, &node.RouterConfig{})
+	my.POST("/api/findAddressByAddress", my.findAddressByAddress, &node.RouterConfig{})
+	my.POST("/api/findAddressByAccountID", my.findAddressByAccountID, &node.RouterConfig{})
+	my.POST("/api/verifyAddress", my.verifyAddress, &node.RouterConfig{})
+	my.POST("/api/getBalanceByAddress", my.getBalanceByAddress, &node.RouterConfig{})
+	my.POST("/api/getAddressBalanceList", my.getAddressBalanceList, &node.RouterConfig{})
+	// **************************** block ****************************
+	my.POST("/api/getSymbolBlockList", my.getSymbolBlockList, &node.RouterConfig{})
+	my.POST("/api/getBlockStatus", my.getBlockStatus, &node.RouterConfig{})
+	// **************************** subscribe ****************************
+	my.POST("/api/subscribe", my.createSubscribe, &node.RouterConfig{})
+	// **************************** trade ****************************
+	my.POST("/api/findTradeLog", my.findTradeLog, &node.RouterConfig{})
+	my.POST("/api/createTrade", my.createTrade, &node.RouterConfig{})
+	my.POST("/api/submitTrade", my.submitTrade, &node.RouterConfig{})
+	my.POST("/api/createSummaryTx", my.createSummaryTx, &node.RouterConfig{})
+	// **************************** contract ****************************
+	my.POST("/api/getContracts", my.getContracts, &node.RouterConfig{})
+	my.POST("/api/createSmartContractTrade", my.createSmartContractTrade, &node.RouterConfig{})
+	my.POST("/api/submitSmartContractTrade", my.submitSmartContractTrade, &node.RouterConfig{})
+	my.POST("/api/callSmartContractABI", my.callSmartContractABI, &node.RouterConfig{})
+	my.POST("/api/findSmartContractReceipt", my.findSmartContractReceipt, &node.RouterConfig{})
+	my.POST("/api/followSmartContractReceipt", my.followSmartContractReceipt, &node.RouterConfig{})
+	// **************************** nft ****************************
+	my.POST("/api/getNFTCollection", my.getNFTCollection, &node.RouterConfig{})
+	my.POST("/api/getNFTToken", my.getNFTToken, &node.RouterConfig{})
+	my.POST("/api/getNFTOwnerToken", my.getNFTOwnerToken, &node.RouterConfig{})
+	my.POST("/api/getNFTTransfer", my.getNFTTransfer, &node.RouterConfig{})
+	my.POST("/api/getTokenURI", my.getTokenURI, &node.RouterConfig{})
+}
+
+func StartSubscribeNode(ob Observer, api *ApiNodeSDK, addrHost string, enableProxy bool) {
 	if ob == nil {
 		panic("observer instance can't be empty")
 	}
@@ -198,10 +242,14 @@ func StartSubscribeNode(ob Observer, api *ApiNodeSDK, addrHost string) {
 	my.api = api
 	my.GET("/api/key", my.key, &node.RouterConfig{Guest: true})
 	my.POST("/api/login", my.login, &node.RouterConfig{UseRSA: true})
+	// **************************** notify ****************************
 	my.POST("/api/transactionNotify", my.transactionNotify, &node.RouterConfig{})
 	my.POST("/api/blockNotify", my.blockNotify, &node.RouterConfig{})
 	my.POST("/api/balanceUpdateNotify", my.balanceUpdateNotify, &node.RouterConfig{})
 	my.POST("/api/smartContractReceiptNotify", my.smartContractReceiptNotify, &node.RouterConfig{})
 	my.POST("/api/nftTransferNotify", my.nftTransferNotify, &node.RouterConfig{})
+	if enableProxy {
+		proxyNode(my)
+	}
 	my.StartServer(addrHost)
 }

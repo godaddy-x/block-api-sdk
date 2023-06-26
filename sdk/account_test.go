@@ -49,3 +49,46 @@ func TestGetAccountBalanceList(t *testing.T) {
 	}
 	fmt.Println(res)
 }
+
+func TestProxyFindAccountByAccountID(t *testing.T) {
+	res, err := GetProxySDK().FindAccountByAccountID(&pb.FindAccountByAccountIDReq{
+		Symbol:    symbol,
+		AccountID: accountID,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+}
+
+func TestProxyFindAccountByWalletID(t *testing.T) {
+	res, err := GetProxySDK().FindAccountByWalletID(&pb.FindAccountByWalletIDReq{
+		WalletID: walletID,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+}
+
+func TestProxyGetBalanceByAccount(t *testing.T) {
+	res, err := GetProxySDK().GetBalanceByAccount(&pb.GetBalanceByAccountReq{
+		Symbol:    symbol,
+		AccountID: accountID,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+}
+
+func TestProxyGetAccountBalanceList(t *testing.T) {
+	res, err := GetSDK().GetAccountBalanceList(&pb.GetAccountBalanceListReq{
+		Symbol:    symbol,
+		AccountID: accountID,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+}
