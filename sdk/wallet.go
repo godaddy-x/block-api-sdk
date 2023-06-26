@@ -14,14 +14,11 @@ func (s *ApiNodeSDK) CreateWallet(req *pb.CreateWalletReq) (*pb.WalletResult, er
 	if err := s.HttpSDK.PostByAuth("/api/createWallet", req, res); err != nil {
 		return nil, err
 	}
-	return s.FindWalletByWalletID(req.WalletID)
+	return s.FindWalletByWalletID(&pb.FindWalletByWalletIDReq{WalletID: res.WalletID})
 }
 
-func (s *ApiNodeSDK) FindWalletByWalletID(walletID string) (*pb.WalletResult, error) {
-	req := &pb.FindWalletByWalletIDReq{
-		AppID:    s.appID,
-		WalletID: walletID,
-	}
+func (s *ApiNodeSDK) FindWalletByWalletID(req *pb.FindWalletByWalletIDReq) (*pb.WalletResult, error) {
+	req.AppID = s.appID
 	res := &pb.FindWalletByWalletIDRes{}
 	if err := s.HttpSDK.PostByAuth("/api/findWalletByWalletID", req, &res.Result); err != nil {
 		return nil, err

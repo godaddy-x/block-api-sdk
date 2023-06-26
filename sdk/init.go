@@ -4,7 +4,6 @@ import (
 	"github.com/blocktree/go-openw-sdk/v2/major"
 	"github.com/godaddy-x/freego/utils"
 	"github.com/godaddy-x/freego/utils/sdk"
-	"time"
 )
 
 type ApiNodeSDK struct {
@@ -13,7 +12,7 @@ type ApiNodeSDK struct {
 	HttpSDK *sdk.HttpSDK
 }
 
-func InitSDK(config major.SdkConfig, observer Observer, proxy ProxyApi) (*ApiNodeSDK, error) {
+func InitSDK(config major.SdkConfig, observer Observer) (*ApiNodeSDK, error) {
 	if len(config.AppID) == 0 {
 		return nil, utils.Error("config appID is nil")
 	}
@@ -45,14 +44,7 @@ func InitSDK(config major.SdkConfig, observer Observer, proxy ProxyApi) (*ApiNod
 		if len(config.AddrHost) == 0 {
 			panic("config addrHost is nil")
 		}
-		go StartSubscribeNode(observer, config.AppID, config.AppKey, config.AddrHost)
-	}
-	if proxy != nil { // TODO init proxy api call, asynchronous service, needs to keep the main thread from ending
-		if len(config.ProxyHost) == 0 {
-			panic("config proxyHost is nil")
-		}
-		time.Sleep(1 * time.Second) // prevent router map concurrency
-		go StartProxyNode(proxy, config.AppID, config.AppKey, config.ProxyHost)
+		go StartSubscribeNode(observer, apiNodeSDK, config.AddrHost)
 	}
 	return apiNodeSDK, nil
 }

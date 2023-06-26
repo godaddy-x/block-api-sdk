@@ -6,7 +6,6 @@ require (
 	github.com/blocktree/go-owcrypt v1.1.7
 	github.com/blocktree/openwallet/v2 v2.4.3
 	github.com/godaddy-x/freego v1.0.112
-	github.com/tidwall/gjson v1.9.3
 	google.golang.org/grpc v1.48.0
 	google.golang.org/protobuf v1.28.1
 )
@@ -37,6 +36,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	github.com/shopspring/decimal v0.0.0-20200105231215-408a2507e114 // indirect
+	github.com/tidwall/gjson v1.9.3 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

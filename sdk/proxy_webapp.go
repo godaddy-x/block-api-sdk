@@ -3,10 +3,7 @@ package sdk
 import (
 	"github.com/blocktree/go-openw-sdk/v2/major"
 	"github.com/godaddy-x/freego/node"
-	"github.com/godaddy-x/freego/utils"
 	"github.com/godaddy-x/freego/utils/crypto"
-	"github.com/godaddy-x/freego/utils/jwt"
-	"github.com/godaddy-x/freego/utils/sdk"
 )
 
 const (
@@ -146,90 +143,6 @@ type NFTTransfer struct {
 	Status      string `json:"status"`      //@required 链上状态，0：失败，1：成功
 }
 
-// ******************************************************* notify node *******************************************************
-
-type Observer interface {
-	// 交易单通知
-	TransactionNotify(transaction *Transaction) error
-	// 区块头通知
-	BlockNotify(blockHeader *BlockHeader) error
-	// 余额更新
-	BalanceUpdateNotify(balance *BalanceObject) error
-	// 智能合约交易回执通知
-	SmartContractReceiptNotify(receipt *SmartContractReceipt) error
-	// NFT合约交易数据通知
-	NFTTransferNotify(transfer *NFTTransfer) error
-}
-
-type UnimplementedObserver struct{}
-
-func (s *UnimplementedObserver) TransactionNotify(transaction *Transaction) error {
-	return nil
-}
-
-// 区块头通知
-func (s *UnimplementedObserver) BlockNotify(blockHeader *BlockHeader) error {
-	return nil
-}
-
-// 余额更新
-func (s *UnimplementedObserver) BalanceUpdateNotify(balance *BalanceObject) error {
-	return nil
-}
-
-// 智能合约交易回执通知
-func (s *UnimplementedObserver) SmartContractReceiptNotify(receipt *SmartContractReceipt) error {
-	return nil
-}
-
-// NFT合约交易数据通知
-func (s *UnimplementedObserver) NFTTransferNotify(transfer *NFTTransfer) error {
-	return nil
-}
-
-// ******************************************************* webapp node *******************************************************
-
-type SubscribeNode struct {
-	node.HttpNode
-	obs  Observer
-	auth AuthInfo
-}
-
-func NewSubscribeNode() *SubscribeNode {
-	var my = &SubscribeNode{}
-	my.EnableECC(true)
-	keyConfig, _ := major.ReadKeyConfig()
-	if len(keyConfig.EcdsaKey) > 0 {
-		cipher := &crypto.EccObj{}
-		if err := cipher.LoadS256ECC(keyConfig.EcdsaKey); err != nil {
-			panic("ECC certificate generation failed")
-		}
-		my.AddCipher(cipher)
-	}
-	jwtConfig := major.ReadJwtConfig()
-	my.AddJwtConfig(jwtConfig)
-	return my
-}
-
-func StartSubscribeNode(ob Observer, appID, appKey, addrHost string) {
-	if ob == nil {
-		panic("observer instance can't be empty")
-	}
-	my := NewSubscribeNode()
-	my.obs = ob
-	my.auth = AuthInfo{appID: appID, appKey: appKey}
-	my.GET("/api/key", my.key, &node.RouterConfig{Guest: true})
-	my.POST("/api/login", my.login, &node.RouterConfig{UseRSA: true})
-	my.POST("/api/transactionNotify", my.transactionNotify, &node.RouterConfig{})
-	my.POST("/api/blockNotify", my.blockNotify, &node.RouterConfig{})
-	my.POST("/api/balanceUpdateNotify", my.balanceUpdateNotify, &node.RouterConfig{})
-	my.POST("/api/smartContractReceiptNotify", my.smartContractReceiptNotify, &node.RouterConfig{})
-	my.POST("/api/nftTransferNotify", my.nftTransferNotify, &node.RouterConfig{})
-	my.StartServer(addrHost)
-}
-
-// ******************************************************* webapp api *******************************************************
-
 type BalanceObject struct {
 	Type             int64               `json:"type"` // 1.地址 2.账户
 	Symbol           string              `json:"symbol"`
@@ -250,77 +163,45 @@ type TokenBalanceObject struct {
 	ContractID       string `json:"contractID"`
 }
 
-func (s *SubscribeNode) key(ctx *node.Context) error {
-	_, publicKey := ctx.RSA.GetPublicKey()
-	return s.Text(ctx, publicKey)
+// ******************************************************* webapp node *******************************************************
+
+type SubscribeNode struct {
+	node.HttpNode
+	obs Observer
+	//auth AuthInfo
+	api *ApiNodeSDK
 }
 
-func (s *SubscribeNode) login(ctx *node.Context) error {
-	req := &AppLogin{}
-	if err := ctx.JsonBody.ParseData(req); err != nil {
-		return err
+func NewSubscribeNode() *SubscribeNode {
+	var my = &SubscribeNode{}
+	my.EnableECC(true)
+	keyConfig, _ := major.ReadKeyConfig()
+	if len(keyConfig.EcdsaKey) > 0 {
+		cipher := &crypto.EccObj{}
+		if err := cipher.LoadS256ECC(keyConfig.EcdsaKey); err != nil {
+			panic("ECC certificate generation failed")
+		}
+		my.AddCipher(cipher)
 	}
-	if !utils.PasswordVerify(s.auth.appKey, utils.GetLocalSecretKey(), req.AppSecret) {
-		return utils.Error("appSecret invalid")
-	}
-	subject := &jwt.Subject{}
-	config := ctx.GetJwtConfig()
-	token := subject.Create(s.auth.appID).Dev("API").Generate(config)
-	secret := jwt.GetTokenSecret(token, config.TokenKey)
-	return s.Json(ctx, &sdk.AuthToken{Token: token, Secret: secret, Expired: subject.Payload.Exp})
+	jwtConfig := major.ReadJwtConfig()
+	my.AddJwtConfig(jwtConfig)
+	return my
 }
 
-func (s *SubscribeNode) transactionNotify(ctx *node.Context) error {
-	tx := &Transaction{}
-	if err := ctx.JsonBody.ParseData(tx); err != nil {
-		return err
+func StartSubscribeNode(ob Observer, api *ApiNodeSDK, addrHost string) {
+	if ob == nil {
+		panic("observer instance can't be empty")
 	}
-	if err := s.obs.TransactionNotify(tx); err != nil {
-		return s.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
-	}
-	return s.Json(ctx, &CallResult{Success: true})
-}
-
-func (s *SubscribeNode) blockNotify(ctx *node.Context) error {
-	head := &BlockHeader{}
-	if err := ctx.JsonBody.ParseData(head); err != nil {
-		return err
-	}
-	if err := s.obs.BlockNotify(head); err != nil {
-		return s.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
-	}
-	return s.Json(ctx, &CallResult{Success: true})
-}
-
-func (s *SubscribeNode) balanceUpdateNotify(ctx *node.Context) error {
-	balance := &BalanceObject{}
-	if err := ctx.JsonBody.ParseData(balance); err != nil {
-		return err
-	}
-	if err := s.obs.BalanceUpdateNotify(balance); err != nil {
-		return s.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
-	}
-	return s.Json(ctx, &CallResult{Success: true})
-}
-
-func (s *SubscribeNode) smartContractReceiptNotify(ctx *node.Context) error {
-	receipt := &SmartContractReceipt{}
-	if err := ctx.JsonBody.ParseData(receipt); err != nil {
-		return err
-	}
-	if err := s.obs.SmartContractReceiptNotify(receipt); err != nil {
-		return s.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
-	}
-	return s.Json(ctx, &CallResult{Success: true})
-}
-
-func (s *SubscribeNode) nftTransferNotify(ctx *node.Context) error {
-	transfer := &NFTTransfer{}
-	if err := ctx.JsonBody.ParseData(transfer); err != nil {
-		return err
-	}
-	if err := s.obs.NFTTransferNotify(transfer); err != nil {
-		return s.Json(ctx, &CallResult{Success: false, ErrorMsg: err.Error()})
-	}
-	return s.Json(ctx, &CallResult{Success: true})
+	my := NewSubscribeNode()
+	my.obs = ob
+	//my.auth = AuthInfo{appID: appID, appKey: appKey}
+	my.api = api
+	my.GET("/api/key", my.key, &node.RouterConfig{Guest: true})
+	my.POST("/api/login", my.login, &node.RouterConfig{UseRSA: true})
+	my.POST("/api/transactionNotify", my.transactionNotify, &node.RouterConfig{})
+	my.POST("/api/blockNotify", my.blockNotify, &node.RouterConfig{})
+	my.POST("/api/balanceUpdateNotify", my.balanceUpdateNotify, &node.RouterConfig{})
+	my.POST("/api/smartContractReceiptNotify", my.smartContractReceiptNotify, &node.RouterConfig{})
+	my.POST("/api/nftTransferNotify", my.nftTransferNotify, &node.RouterConfig{})
+	my.StartServer(addrHost)
 }
